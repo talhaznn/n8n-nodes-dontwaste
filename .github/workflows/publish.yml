@@ -1,0 +1,23 @@
+name: Publish npm package
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    environment: npm
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+          registry-url: https://registry.npmjs.org
+      - name: Require a matching version tag
+        run: node -e 'const v=require("./package.json").version;if(process.env.GITHUB_REF!=="refs/tags/v"+v)process.exit(1)'
+      - run: npm ci --ignore-scripts
+      - run: npm test
+      - run: npm publish --provenance --access public

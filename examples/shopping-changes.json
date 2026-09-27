@@ -1,0 +1,57 @@
+{
+  "name": "DontWaste · Shopping changes",
+  "nodes": [
+    {
+      "id": "shopping-events",
+      "name": "Shopping changes",
+      "type": "n8n-nodes-dontwaste.dontWasteTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        300
+      ],
+      "parameters": {
+        "entity": "shopping",
+        "resetCursor": false,
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "event-references",
+      "name": "Keep event reference",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        260,
+        300
+      ],
+      "parameters": {
+        "jsCode": "return $input.all().filter(i => !i.json.test_only);"
+      }
+    }
+  ],
+  "connections": {
+    "Shopping changes": {
+      "main": [
+        [
+          {
+            "node": "Keep event reference",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": []
+}

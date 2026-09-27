@@ -1,0 +1,71 @@
+{
+  "name": "DontWaste · Review due stock",
+  "nodes": [
+    {
+      "id": "manual",
+      "name": "Start manually",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        300
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "due-stock",
+      "name": "Read inventory",
+      "type": "n8n-nodes-dontwaste.dontWaste",
+      "typeVersion": 1,
+      "position": [
+        220,
+        300
+      ],
+      "parameters": {
+        "operation": "products"
+      }
+    },
+    {
+      "id": "filter-dates",
+      "name": "Review dates",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        460,
+        300
+      ],
+      "parameters": {
+        "jsCode": "// Calendar dates avoid daylight-saving offsets. Today follows the workflow timezone.\nconst day = 86400000;\nconst calendar = value => value ? Date.parse(value.slice(0,10) + 'T00:00:00Z') : NaN;\nconst today = calendar($now.toISODate());\nreturn $input.all().filter(item => {\n  const p = item.json.body;\n  if (item.json.deleted || p.is_consumed || !(p.quantity > 0)) return false;\n  let expiry = calendar(p.expiration_date);\n  if (p.is_opened && p.opened_date && Number.isInteger(p.shelf_life_after_opening)) {\n    const opened = calendar(p.opened_date) + p.shelf_life_after_opening * day;\n    if (!Number.isFinite(expiry) || opened < expiry) expiry = opened;\n  }\n  if (!Number.isFinite(expiry)) return false;\n  item.json.days_until = Math.round((expiry - today) / day);\n  return item.json.days_until <= 7;\n});"
+      }
+    }
+  ],
+  "connections": {
+    "Start manually": {
+      "main": [
+        [
+          {
+            "node": "Read inventory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read inventory": {
+      "main": [
+        [
+          {
+            "node": "Review dates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": []
+}

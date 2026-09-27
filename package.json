@@ -1,0 +1,58 @@
+{
+  "name": "n8n-nodes-dontwaste",
+  "version": "1.0.0",
+  "description": "Scoped DontWaste household inventory and shopping actions for self-hosted n8n",
+  "license": "MIT",
+  "keywords": [
+    "n8n-community-node-package"
+  ],
+  "author": {
+    "name": "DontWaste",
+    "url": "https://dontwaste.app"
+  },
+  "engines": {
+    "node": ">=22.23.1"
+  },
+  "files": [
+    "dist",
+    "examples",
+    "README.md",
+    "LICENSE",
+    "docs"
+  ],
+  "scripts": {
+    "build": "tsc && node scripts/build-icons.cjs",
+    "test": "npm run build && node --test test/*.test.cjs",
+    "prepack": "npm test"
+  },
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/DontWasteApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/DontWaste/DontWaste.node.js",
+      "dist/nodes/DontWaste/DontWasteTrigger.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "26.5.1",
+    "n8n-workflow": "2.16.0",
+    "typescript": "7.0.2"
+  },
+  "peerDependencies": {
+    "n8n-workflow": ">=2.16.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/talhaznn/n8n-nodes-dontwaste.git"
+  },
+  "homepage": "https://github.com/talhaznn/n8n-nodes-dontwaste#readme",
+  "bugs": {
+    "url": "https://github.com/talhaznn/n8n-nodes-dontwaste/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}
