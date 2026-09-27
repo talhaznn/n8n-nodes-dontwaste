@@ -18,7 +18,7 @@ community package for self-hosted n8n, not a verified n8n Cloud integration.
 3. In DontWaste, open **Settings → n8n**, choose a household, name the connection
    and select its permissions. Existing connections never gain write permissions
    automatically. A Google or Apple login is sufficient.
-4. Copy the household ID and the key shown once into **DontWaste API** credentials
+4. Copy the household ID and the key shown once into **DontWaste household** credentials
    in n8n. Run the credential test or **Test Connection**.
 5. Import one of the JSON files from `examples/` and select your credential in
    every DontWaste node. All examples start inactive.
@@ -92,6 +92,6 @@ Report problems in [Issues](https://github.com/talhaznn/n8n-nodes-dontwaste/issu
 with the package/n8n versions and error code, without keys or household contents.
 
 `npm test` checks receipt recovery, revisions, pagination, event identity and
-node behavior. The additional [runtime fixture](test/runtime/README.md) verifies
+node behavior. The additional [runtime fixture](https://github.com/talhaznn/n8n-nodes-dontwaste/blob/main/test/runtime/README.md) verifies
 installation and receipt recovery in an isolated n8n instance. A test against
 your own installation and phone remains necessary before relying on a workflow.
